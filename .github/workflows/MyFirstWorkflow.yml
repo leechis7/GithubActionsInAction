@@ -3,6 +3,9 @@ on:
   push:
     branches: 
       - main
+
+  repository_dispatch:
+    types: [event1, event2]
       
   workflow_dispatch:
     inputs:
@@ -38,6 +41,11 @@ jobs:
           echo "Environment ${{ inputs.environment }}"
         name: Workflow Inputs
         if: ${{ github.event_name == 'workflow_dispatch' }}
+
+      - run: |
+          echo "Payload: ${{ toJSON(github.event.client_payload }}"
+        name: Payload
+        if: ${{ github.event_name == 'repository_dispatch' }}
         
       - run: echo "Hello World!"
 
